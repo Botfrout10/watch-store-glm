@@ -14,3 +14,4 @@ iosApp/iosApp.xcodeproj/project.xcworkspace/xcuserdata/
 iosApp/iosApp.xcodeproj/xcshareddata/IDEWorkspaceChecks.plist
 schemas/**/com.horology.store.data*/1.db
 build-logs/
+wrapper-fail.log
