@@ -1,7 +1,13 @@
 package com.horology.store.shared
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,8 +25,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 import com.horology.store.shared.di.AppContainer
 import com.horology.store.shared.di.LocalAppContainer
+import com.horology.store.shared.motion.motionDurationScale
 import com.horology.store.shared.navigation.HorologyNavHost
 import com.horology.store.shared.theme.HoroColors
 import com.horology.store.shared.theme.HorologyTheme
@@ -32,12 +40,25 @@ fun App(container: AppContainer = remember { AppContainer() }) {
         androidx.compose.runtime.CompositionLocalProvider(LocalAppContainer provides container) {
             val scope = rememberCoroutineScope()
             val gate = container.onboarding.completed.collectAsState(null).value
-            when (gate) {
-                null -> PaperLoading()
-                true -> HorologyNavHost()
-                else -> OnboardingScreen(
-                    onDone = { scope.launch { container.onboarding.complete() } },
-                )
+            AnimatedContent(
+                targetState = gate,
+                transitionSpec = {
+                    // Shared-axis exit (DESIGN.md): sixth-width slide + crossfade, reduce-motion halved.
+                    val s = motionDurationScale()
+                    (slideInHorizontally(tween((360 * s).roundToInt())) { it / 6 } +
+                        fadeIn(tween((300 * s).roundToInt()))) togetherWith
+                        (slideOutHorizontally(tween((280 * s).roundToInt())) { -(it / 6) } +
+                            fadeOut(tween((240 * s).roundToInt())))
+                },
+                label = "gate",
+            ) { g ->
+                when (g) {
+                    null -> PaperLoading()
+                    true -> HorologyNavHost()
+                    else -> OnboardingScreen(
+                        onDone = { scope.launch { container.onboarding.complete() } },
+                    )
+                }
             }
         }
     }

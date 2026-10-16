@@ -33,6 +33,18 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 - **Kotlin pinned 2.4.20** (not 2.4.21): CMP 1.12.2 resources accessors failed to resolve with 2.4.21; 2.4.20 is JetBrains' CI-tested pair.
 - **Fonts are composition-provided** (CMP `Font()` is @Composable): `HoroFonts.grotesk()/mono()` called inside `HorologyTheme`; named tokens via `LocalHoroType.current.*` (static top-level TextStyle vals don't exist by design).
 
+## Milestone 5 — Onboarding ✅ (2026-10-16)
+
+- [x] 3-page HorizontalPager; per-page Masthead w/ trailing SKIP; mono body copy
+- [x] Giant ghost numerals 01/02/03 (grotesk bold 200sp, ink 7%) on slow parallax layer (0.42), dial on 0.16 — both settle exactly at rest, fade with drag
+- [x] `RailwayDial` (Canvas): white face + hairline ring, 60-bar railway track (major at hours), ink hour/minute hands (rounded, tails), red 2nd hand w/ lollipop disc + beat easing (EaseOutBack snap in first 15% of each second, rest after) — all angles derived from real wall clock (frame-time aligned to `nowMs()`); draw-phase-only state reads (no recomposition/frame)
+- [x] Staggered copy fade+slide: 60ms cascade, EaseOutCubic 420ms; replay on page activation
+- [x] Spring page indicator: 4dp hairline dots → 10dp red with overshoot spring (damping 0.5)
+- [x] Reduce motion: `motionDurationScale()` expect/actual — Android animator scale (0 → 0.5 halving), iOS `UIAccessibilityIsReduceMotionEnabled` → 0.5; scales stagger + gate transitions
+- [x] Gate exit = shared-axis (1/6 slide + crossfade) via `AnimatedContent` in App.kt
+- [x] Device-verified on horo10 (emulator-5556): fresh install → p1/p2/p3 correct, dial live & true-time, Explore → Home, force-stop relaunch → Home (persistence), no FATAL; Android compile + iOS klib both green
+- Notes: page copy echoes the app's tab mastheads (HOROLOGY / The Inventory / Yours to Wind); EXPLORE completes from any page; SKIP in masthead trailing slot
+
 ## Remaining risks / TODO
 
 - iOS: Xcode project + Info.plist + Assets scaffold not yet written (after Android passes milestones 2-4).
