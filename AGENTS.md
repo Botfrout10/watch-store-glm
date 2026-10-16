@@ -8,7 +8,7 @@ Design language: **Light minimal Swiss** (paper white, ink black, signal red acc
 | Purpose | Command |
 |---|---|
 | Build Android APK (primary check) | `.\gradlew.bat :androidApp:assembleDebug` |
-| Fast compile check, no dex | `.\gradlew.bat :composeApp:compileKotlinAndroid` |
+| Fast compile check, no dex | `.\gradlew.bat :composeApp:compileAndroidMain` |
 | Unit tests (once present) | `.\gradlew.bat allTests` |
 | Clean | `.\gradlew.bat clean` |
 
@@ -31,7 +31,7 @@ iosApp/       Xcode project consuming the "ComposeApp" framework (from composeAp
 
 | Library | Version | Note |
 |---|---|---|
-| Kotlin | 2.4.21 | |
+| Kotlin | 2.4.20 | CI-tested pair with CMP 1.12.2 (2.4.21 postdates it — resources wiring broke with it) |
 | AGP / Gradle | 9.2.0 / 9.8.1 | AGP 9 forbids old `com.android.library` + KGP combo |
 | Compose Multiplatform | 1.12.2 | JetBrains plugin `org.jetbrains.compose` |
 | Material3 | **1.12.0-alpha03** | M3 tracks alpha train independently of compose — pairing per JetBrains catalog examples |
@@ -48,6 +48,12 @@ iosApp/       Xcode project consuming the "ComposeApp" framework (from composeAp
 - Package root of all shared code: `com.horology.store.shared`
 - UI: 100% Compose, fully in `composeApp/src/commonMain` — screens in `ui/`, design tokens in `theme/`
 - Custom icon vectors only (xml in `composeResources/drawable`) — no material-icons-extended dependency
+- **Compose resources (CMP 1.12 + AGP-9 KMP plugin — learned the hard way):**
+  - commonMain needs the direct `org.jetbrains.compose.components:components-resources` dependency or `Res` never generates
+  - Generated accessors are top-level extension properties imported by **flat FQN**: `import com.horology.store.shared.ic_heart`, `import com.horology.store.shared.space_grotesk_400` (NOT `…shared.drawable.ic_heart` — that's a phantom package)
+  - `org.jetbrains.compose.resources.Font()` is **@Composable** — font families can't be static vals; use `HoroFonts.grotesk()`/`mono()` in composition and named type tokens via `LocalHoroType.current.*`
+  - `TextStyle(...)` always with named args (color-first positional order doesn't match)
+- Coil 3.6: import is top-level `coil3.compose.AsyncImage` (not `io.coil3…`)
 - Product images: **URL-based via Coil** (candidates verified with live HEAD checks before shipping — see `data/ImageCatalog.kt` when built); every URL must return 200 + image/jpeg before being trusted
 - Fonts: Space Grotesk (display/UI) + IBM Plex Mono (numerals) inside `composeResources/font`
 - Catalog data: bundled JSON in `commonMain/composeResources/files`

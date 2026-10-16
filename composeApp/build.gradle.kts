@@ -11,7 +11,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "com.horology.store.shared"
         compileSdk = libs.versions.compileSdk.get().toInt()
         minSdk = libs.versions.minSdk.get().toInt()
@@ -36,6 +36,7 @@ kotlin {
             implementation(libs.compose.ui)
             implementation(libs.compose.foundation)
             implementation(libs.compose.material3)
+            implementation(libs.compose.resources)
             implementation(libs.coroutines.core)
             implementation(libs.serialization.json)
             implementation(libs.androidx.navigation)
@@ -63,4 +64,10 @@ dependencies {
 
 room {
     schemaDirectory("$projectDir/schemas")
+}
+
+compose {
+    resources {
+        packageOfResClass = "com.horology.store.shared"
+    }
 }
