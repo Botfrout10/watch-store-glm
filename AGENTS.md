@@ -57,6 +57,7 @@ iosApp/       Xcode project consuming the "ComposeApp" framework (from composeAp
 - Product images: **URL-based via Coil** (candidates verified with live HEAD checks before shipping — see `data/ImageCatalog.kt` when built); every URL must return 200 + image/jpeg before being trusted
 - Fonts: Space Grotesk (display/UI) + IBM Plex Mono (numerals) inside `composeResources/font`
 - Catalog data: bundled JSON in `commonMain/composeResources/files`
+- **androidApp composes too:** AGP-9 built-in Kotlin needs `alias(libs.plugins.composeCompiler)` applied explicitly in `androidApp/build.gradle.kts` (auto-apply does not happen; without it `setContent` lambdas ship untransformed and crash at runtime).
 - Per-feature commits; update PLAN.md in the same commit as the feature it describes
 
 ## Design source of truth

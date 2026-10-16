@@ -1,5 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    // AGP9 built-in Kotlin does not auto-apply the compose compiler —
+    // MainActivity's setContent lambda must be Compose-transformed (@Composable→Function2).
+    alias(libs.plugins.composeCompiler)
 }
 
 android {

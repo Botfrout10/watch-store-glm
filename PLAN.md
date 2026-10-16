@@ -36,5 +36,7 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 ## Remaining risks / TODO
 
 - iOS: Xcode project + Info.plist + Assets scaffold not yet written (after Android passes milestones 2-4).
-- Compose compiler on `androidApp` is provided by AGP 9 built-in Kotlin — verify explicitly if any composable lambda errors appear in androidApp later.
+- **M1 crash fixed:** AGP-9 built-in Kotlin does **not** auto-apply the Compose compiler — `androidApp` was missing it, so `MainActivity`'s `setContent` lambda shipped as plain `Function0` while `activity-compose`'s method signature expects the compiler-transformed `Function2` → runtime `NoSuchMethodError`. Fix: `plugins { alias(libs.plugins.composeCompiler) }` in `androidApp/build.gradle.kts`. Verified live: app boots, no FATAL.
+- **Emulator testing isolation:** the shared `pixel10` AVD (emulator-5554, "Pulse") is used by another AI agent (com.taxiapp.android) — a separate AVD `horo10` (emulator-5556, same API-37 image, fresh userdata) was handcrafted at `~/.android/avd/horo10.*` for HOROLOGY testing. Use `adb -s emulator-5556`.
+- On-device flow verified (2026-10-16, emulator-5556): onboarding CTA → Home; all 4 tabs track the sliding red dot + filled icons; force-stop + relaunch skips onboarding (DataStore gate persists).
 - `gradle-9.8.1` cached dist used; wrapper pinned to same version.
