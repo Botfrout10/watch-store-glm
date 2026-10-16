@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Swiss dial: thin ink ring, ink hour hand, red pendulum second hand -->
+    <group
+        android:pivotX="54"
+        android:pivotY="54"
+        android:scaleX="0.62"
+        android:scaleY="0.62">
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#0F0F0F"
+            android:strokeWidth="4"
+            android:pathData="M26,54 a28,28 0 1 1 56,0 a28,28 0 1 1 -56,0" />
+        <path
+            android:strokeColor="#0F0F0F"
+            android:strokeWidth="5"
+            android:strokeLineCap="round"
+            android:pathData="M54,54 L66,64" />
+        <path
+            android:strokeColor="#E10600"
+            android:strokeWidth="4"
+            android:strokeLineCap="round"
+            android:pathData="M54,54 L54,34" />
+        <path
+            android:fillColor="#E10600"
+            android:pathData="M49,34 a5,5 0 1 1 10,0 a5,5 0 1 1 -10,0" />
+    </group>
+</vector>
