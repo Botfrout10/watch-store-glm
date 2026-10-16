@@ -11,7 +11,7 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 | 1 | Scaffold: git, KMP modules, AGP9-KMP plugin setup, wrapper, docs, green `:androidApp:assembleDebug` | ✅ done |
 | 2 | Design system: Swiss theme (palette/type/grid), tokens, custom icon vectors, core components | ✅ done |
 | 3 | Data layer: models, catalog JSON + repository, Room cart/favorites, DataStore onboarding flag | ✅ done |
-| 4 | Navigation shell + bottom bar + screen transitions | pending |
+| 4 | Navigation shell + bottom bar + screen transitions | ✅ done (stub screens) |
 | 5 | Onboarding: Canvas Swiss dial animation + parallax pages | pending |
 | 6 | Home: masthead, featured hero, collections rail, staggered grid, nav bar | pending |
 | 7 | Catalog + search + filter chips | pending |

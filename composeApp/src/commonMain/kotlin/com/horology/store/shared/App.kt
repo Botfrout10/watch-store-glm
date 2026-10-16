@@ -1,12 +1,74 @@
 package com.horology.store.shared
 
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
+import com.horology.store.shared.di.AppContainer
+import com.horology.store.shared.di.LocalAppContainer
+import com.horology.store.shared.navigation.HorologyNavHost
+import com.horology.store.shared.theme.HoroColors
 import com.horology.store.shared.theme.HorologyTheme
-import com.horology.store.shared.ui.ledger.DesignLedgerScreen
+import com.horology.store.shared.ui.onboarding.OnboardingScreen
 
 @Composable
-fun App() {
+fun App(container: AppContainer = remember { AppContainer() }) {
     HorologyTheme {
-        DesignLedgerScreen()
+        androidx.compose.runtime.CompositionLocalProvider(LocalAppContainer provides container) {
+            val scope = rememberCoroutineScope()
+            val gate = container.onboarding.completed.collectAsState(null).value
+            when (gate) {
+                null -> PaperLoading()
+                true -> HorologyNavHost()
+                else -> OnboardingScreen(
+                    onDone = { scope.launch { container.onboarding.complete() } },
+                )
+            }
+        }
+    }
+}
+
+/** Blank paper with a single breathing red dot — the gate's loading state. */
+@Composable
+private fun PaperLoading() {
+    val pop = remember { Animatable(0.6f) }
+    LaunchedEffect(Unit) {
+        while (true) {
+            pop.animateTo(1.2f, tween(620))
+            pop.animateTo(0.6f, tween(620))
+        }
+    }
+    Box(
+        Modifier
+            .fillMaxSize()
+            .background(HoroColors.paper),
+        contentAlignment = Alignment.Center,
+    ) {
+        Box(
+            Modifier
+                .graphicsLayer {
+                    scaleX = pop.value
+                    scaleY = pop.value
+                    alpha = 0.9f
+                }
+                .size(8.dp)
+                .clip(CircleShape)
+                .background(HoroColors.red),
+        )
     }
 }
