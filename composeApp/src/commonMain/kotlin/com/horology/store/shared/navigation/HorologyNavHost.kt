@@ -52,7 +52,9 @@ fun HorologyNavHost() {
         }
         composable<Catalog> {
             ShellScreen(selectedTab = 1, onSelectTab = tabSelect(nav)) {
-                CatalogScreen()
+                CatalogScreen(
+                    onOpenProduct = { id -> nav.navigate(ProductDetail(id)) },
+                )
             }
         }
         composable<Favorites> {

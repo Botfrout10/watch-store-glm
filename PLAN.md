@@ -14,7 +14,7 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 | 4 | Navigation shell + bottom bar + screen transitions | ✅ done (stub screens) |
 | 5 | Onboarding: Canvas Swiss dial animation + parallax pages | pending |
 | 6 | Home: masthead, featured hero, collections rail, staggered grid, nav bar | ✅ done |
-| 7 | Catalog + search + filter chips | in progress |
+| 7 | Catalog + search + filter chips | ✅ done |
 | 8 | Product detail: gallery, spec accordion, add-to-cart flight, heart burst | pending |
 | 9 | Cart + checkout confirm: swipe-dismiss, count-up total, success check | pending |
 | 10 | Favorites + polish pass (empty states, insets, deep polish) | pending |
@@ -56,6 +56,18 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 - [x] **`formatUsd` fixed** ($$021,450 → $21,450): template was emitting two literal `$`; grouping loop zero-padded the leading group. New impl: groups collected least→most, most-significant group unpadded, negative = `-$`
 - [x] Device-verified (emulator-5556): price correct on hero, rail plates populate, no FATAL
 - Notes: images in catalog still come from the unverified candidate pool (off-topic/brand text visible on several, e.g. Tissot hero, Apple Watch diver, cat, ocean) — visual re-curation deferred by user; tracked below
+
+## Milestone 7 — Catalog ✅ (2026-10-17)
+
+- [x] Fixed header column: masthead (Nº 02 / The Inventory) + search + chips stay pinned; grid scrolls beneath (imePadding aware)
+- [x] Search: BasicTextField over paper, morphing red underline grows on focus (220ms), search icon, clear ×; debounce 260ms before refine
+- [x] Filter chips: All + 5 categories, flat 2dp-corner plates; active = ink fill w/ paper text; press-scale 0.97 spring
+- [x] Refine pipeline: 240ms skeleton pulse (infinite 0.35→0.85 alpha steel blocks + text bars) via AnimatedContent fade-through 150ms; grid re-entrance 150ms alpha
+- [x] Query matches name/house/collection/reference (case-insensitive); combined with the active chip
+- [x] Empty state: NO REFERENCES + contextual copy + CLEAR FILTERS (resets query + chip)
+- [x] 2-col grid of ProductCards keyed by id; favorites flow -> Room; nav to detail (route id passed — device-verified)
+- [x] Device-verified (emulator-5556): default grid, search "chro" -> empty state, "commandeur" -> 1 card, DIVER chip -> 2 divers, card -> The Study stub, no FATAL
+- Notes: chip row horizontal-scrolls if clipped (6 chips at 1080w fits ~4.5); red underline is the only red accent on the screen
 
 ## Remaining risks / TODO
 
