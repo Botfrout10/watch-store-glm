@@ -57,6 +57,7 @@ import com.horology.store.shared.di.LocalAppContainer
 import com.horology.store.shared.ic_close
 import com.horology.store.shared.ic_minus
 import com.horology.store.shared.ic_plus
+import com.horology.store.shared.motion.motionDurationScale
 import com.horology.store.shared.theme.HoroColors
 import com.horology.store.shared.theme.HoroShapes
 import com.horology.store.shared.theme.LocalHoroType
@@ -292,11 +293,12 @@ private fun StepperButton(
 /** Mono receipt: lines, hairlines, count-up grand total. */
 @Composable
 private fun Summary(totalUsd: Long, lineCount: Int) {
+    val motion = remember { motionDurationScale() }
     val counter = remember { Animatable(totalUsd.toFloat()) }
     LaunchedEffect(totalUsd) {
         counter.animateTo(
             totalUsd.toFloat(),
-            tween(450, easing = EaseOutCubic),
+            tween((450 * motion).toInt(), easing = EaseOutCubic),
         )
     }
     val shown = counter.value.toLong()

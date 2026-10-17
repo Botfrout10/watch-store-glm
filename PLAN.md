@@ -12,7 +12,7 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 | 2 | Design system: Swiss theme (palette/type/grid), tokens, custom icon vectors, core components | ✅ done |
 | 3 | Data layer: models, catalog JSON + repository, Room cart/favorites, DataStore onboarding flag | ✅ done |
 | 4 | Navigation shell + bottom bar + screen transitions | ✅ done (stub screens) |
-| 5 | Onboarding: Canvas Swiss dial animation + parallax pages | pending |
+| 5 | Onboarding: Canvas Swiss dial animation + parallax pages | ✅ done |
 | 6 | Home: masthead, featured hero, collections rail, staggered grid, nav bar | ✅ done |
 | 7 | Catalog + search + filter chips | ✅ done |
 | 8 | Product detail: gallery, spec accordion, add-to-cart flight, heart burst | ✅ done (dot-flight deferred) |
@@ -101,6 +101,8 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 - Notes: the remaining "polish pass" items of M10 (reduce-motion audit, insets sweep, catalog image re-curation) stay open below
 
 ## Remaining risks / TODO
+
+- **M10 polish pass ✅ (2026-10-17):** reduce-motion scaling applied to all fixed-duration tweens (catalog underline/refine/fades/skeleton, detail ring + morph + loading pulse, cart count-up, favorites entrance — durations × `motionDurationScale()`; springs left as-is per DESIGN); `navigationBarsPadding()` added to the detached detail + checkout routes so CTAs clear the gesture bar (device-verified on detail)
 
 - iOS: Xcode project + Info.plist + Assets scaffold not yet written (after Android passes milestones 2-4).
 - **M1 crash fixed:** AGP-9 built-in Kotlin does **not** auto-apply the Compose compiler — `androidApp` was missing it, so `MainActivity`'s `setContent` lambda shipped as plain `Function0` while `activity-compose`'s method signature expects the compiler-transformed `Function2` → runtime `NoSuchMethodError`. Fix: `plugins { alias(libs.plugins.composeCompiler) }` in `androidApp/build.gradle.kts`. Verified live: app boots, no FATAL.

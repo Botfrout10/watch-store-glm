@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -65,6 +66,7 @@ import com.horology.store.shared.ic_check
 import com.horology.store.shared.ic_chevron_down
 import com.horology.store.shared.ic_heart
 import com.horology.store.shared.ic_heart_filled
+import com.horology.store.shared.motion.motionDurationScale
 import com.horology.store.shared.theme.HoroColors
 import com.horology.store.shared.theme.HoroShapes
 import com.horology.store.shared.theme.LocalHoroType
@@ -94,7 +96,8 @@ fun ProductDetailScreen(
     Column(
         Modifier
             .fillMaxSize()
-            .statusBarsPadding(),
+            .statusBarsPadding()
+            .navigationBarsPadding(),
     ) {
         TopBar(
             favorite = product != null && favorites.contains(product.id),
@@ -188,11 +191,12 @@ private fun NotFound(modifier: Modifier = Modifier) {
 /** Paper skeleton while the catalog parses. */
 @Composable
 private fun LoadingBlock(modifier: Modifier = Modifier) {
+    val motion = remember { motionDurationScale() }
     val pulse = rememberInfiniteTransition(label = "detailSkeleton")
     val alpha by pulse.animateFloat(
         initialValue = 0.35f,
         targetValue = 0.85f,
-        animationSpec = infiniteRepeatable(tween(560, easing = LinearEasing)),
+        animationSpec = infiniteRepeatable(tween((560 * motion).toInt(), easing = LinearEasing)),
         label = "pulseAlpha",
     )
     Column(
@@ -329,6 +333,7 @@ private fun BurstHeart(
     favorite: Boolean,
     onToggle: () -> Unit,
 ) {
+    val motion = remember { motionDurationScale() }
     val scale = remember { Animatable(1f) }
     val ring = remember { Animatable(0f) }
 
@@ -338,7 +343,7 @@ private fun BurstHeart(
             scale.animateTo(1.35f, spring(dampingRatio = 0.45f, stiffness = Spring.StiffnessMedium))
             scale.animateTo(1f, spring(dampingRatio = 0.45f, stiffness = Spring.StiffnessMedium))
             ring.snapTo(0f)
-            ring.animateTo(1f, tween(420))
+            ring.animateTo(1f, tween((420 * motion).toInt()))
         } else {
             scale.snapTo(1f)
             ring.snapTo(0f)
@@ -386,6 +391,7 @@ private fun AddToCartBar(
     product: WatchProduct,
     onAdd: () -> Unit,
 ) {
+    val motion = remember { motionDurationScale() }
     var added by remember { mutableStateOf(false) }
     LaunchedEffect(added) {
         if (added) {
@@ -396,7 +402,9 @@ private fun AddToCartBar(
     val interactionSource = remember { MutableInteractionSource() }
     AnimatedContent(
         targetState = added,
-        transitionSpec = { fadeIn(tween(160)) togetherWith fadeOut(tween(160)) },
+        transitionSpec = {
+            fadeIn(tween((160 * motion).toInt())) togetherWith fadeOut(tween((160 * motion).toInt()))
+        },
         label = "addToCartMorph",
         modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
     ) { isAdded ->

@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import com.horology.store.shared.components.Masthead
 import com.horology.store.shared.data.formatUsd
 import com.horology.store.shared.di.LocalAppContainer
+import com.horology.store.shared.motion.motionDurationScale
 import com.horology.store.shared.theme.HoroColors
 import com.horology.store.shared.theme.HoroShapes
 import com.horology.store.shared.theme.LocalHoroType
@@ -57,6 +59,7 @@ fun CheckoutConfirmScreen(
     onDone: () -> Unit,
 ) {
     val container = LocalAppContainer.current
+    val motion = remember { motionDurationScale() }
     LaunchedEffect(Unit) { container.cart.clear() }
 
     val circle = remember { Animatable(0f) }
@@ -68,14 +71,15 @@ fun CheckoutConfirmScreen(
         launch {
             circle.animateTo(1f, spring(dampingRatio = 0.55f, stiffness = Spring.StiffnessMedium))
             check.animateTo(1f, spring(dampingRatio = 0.6f, stiffness = Spring.StiffnessMedium))
-            ticker.animateTo(1f, tween(520, easing = EaseOutCubic))
+            ticker.animateTo(1f, tween((520 * motion).toInt(), easing = EaseOutCubic))
         }
     }
 
     Column(
         Modifier
             .fillMaxSize()
-            .statusBarsPadding(),
+            .statusBarsPadding()
+            .navigationBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Masthead(

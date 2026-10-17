@@ -43,6 +43,7 @@ import com.horology.store.shared.components.ProductCard
 import com.horology.store.shared.data.WatchProduct
 import com.horology.store.shared.di.LocalAppContainer
 import com.horology.store.shared.ic_heart
+import com.horology.store.shared.motion.motionDurationScale
 import com.horology.store.shared.theme.HoroColors
 import com.horology.store.shared.theme.HoroShapes
 import com.horology.store.shared.theme.LocalHoroType
@@ -128,9 +129,10 @@ private fun NotesGrid(
     onUnfavorite: (String) -> Unit,
 ) {
     val fade = remember { Animatable(0f) }
+    val motion = remember { motionDurationScale() }
     LaunchedEffect(products) {
         fade.snapTo(0f)
-        fade.animateTo(1f, tween(220))
+        fade.animateTo(1f, tween((220 * motion).toInt()))
     }
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),

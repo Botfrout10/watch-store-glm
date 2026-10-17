@@ -73,6 +73,7 @@ import com.horology.store.shared.data.WatchProduct
 import com.horology.store.shared.di.LocalAppContainer
 import com.horology.store.shared.ic_close
 import com.horology.store.shared.ic_search
+import com.horology.store.shared.motion.motionDurationScale
 import com.horology.store.shared.theme.HoroColors
 import com.horology.store.shared.theme.HoroShapes
 import com.horology.store.shared.theme.LocalHoroType
@@ -87,6 +88,7 @@ fun CatalogScreen(
 ) {
     val container = LocalAppContainer.current
     val scope = rememberCoroutineScope()
+    val motion = remember { motionDurationScale() }
     val products by produceState<List<WatchProduct>?>(null) {
         value = container.catalog.products()
     }
@@ -107,7 +109,7 @@ fun CatalogScreen(
     LaunchedEffect(effectiveSearch, category, products) {
         if (products == null) return@LaunchedEffect
         refining.value = true
-        delay(240)
+        delay((240 * motion).toLong())
         refining.value = false
     }
 
@@ -140,7 +142,9 @@ fun CatalogScreen(
         )
         AnimatedContent(
             targetState = refining.value,
-            transitionSpec = { fadeIn(tween(150)) togetherWith fadeOut(tween(150)) },
+            transitionSpec = {
+                fadeIn(tween((150 * motion).toInt())) togetherWith fadeOut(tween((150 * motion).toInt()))
+            },
             label = "catalogGridSwap",
             modifier = Modifier.weight(1f),
         ) { refiningNow ->
@@ -187,9 +191,10 @@ private fun SearchField(
     modifier: Modifier = Modifier,
 ) {
     var focused by remember { mutableStateOf(false) }
+    val motion = remember { motionDurationScale() }
     val underline by animateFloatAsState(
         targetValue = if (focused) 1f else 0f,
-        animationSpec = tween(220),
+        animationSpec = tween((220 * motion).toInt()),
         label = "searchUnderline",
     )
 
@@ -329,9 +334,10 @@ private fun CatalogGrid(
     onToggleFavorite: (String) -> Unit,
 ) {
     val fade = remember { Animatable(1f) }
+    val motion = remember { motionDurationScale() }
     LaunchedEffect(products) {
         fade.snapTo(0f)
-        fade.animateTo(1f, tween(150))
+        fade.animateTo(1f, tween((150 * motion).toInt()))
     }
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -358,11 +364,12 @@ private fun CatalogGrid(
 /** Ghost grid: steel blocks pulsing while the list refines. */
 @Composable
 private fun SkeletonGrid(modifier: Modifier = Modifier) {
+    val motion = remember { motionDurationScale() }
     val pulse = rememberInfiniteTransition(label = "skeletonPulse")
     val alpha by pulse.animateFloat(
         initialValue = 0.35f,
         targetValue = 0.85f,
-        animationSpec = infiniteRepeatable(tween(560, easing = LinearEasing)),
+        animationSpec = infiniteRepeatable(tween((560 * motion).toInt(), easing = LinearEasing)),
         label = "pulseAlpha",
     )
     Column(
