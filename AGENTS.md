@@ -9,10 +9,11 @@ Design language: **Light minimal Swiss** (paper white, ink black, signal red acc
 |---|---|
 | Build Android APK (primary check) | `.\gradlew.bat :androidApp:assembleDebug` |
 | Fast compile check, no dex | `.\gradlew.bat :composeApp:compileAndroidMain` |
-| Unit tests (once present) | `.\gradlew.bat allTests` |
+| Unit tests (FormatUsdTest) | `.\gradlew.bat :composeApp:allTests` |
 | Clean | `.\gradlew.bat clean` |
 
 - **Run before every commit.** Never commit red.
+- Unit tests run JVM-hosted (`:composeApp:testAndroidHostTest`); AGP9-KMP needs `withHostTest {}` in the android target (set in composeApp/build.gradle.kts).
 - iOS framework compile (`:composeApp:allTests`, `assembleXCFramework`, linkDebugFrameworkIosArm64) requires macOS — on Windows, iosMain must still **compile clean** (`compileKotlinIosSimulatorArm64` works on Windows with native dependencies resolution... only if CI caches KLib failures; rely on code review + flag any Kotlin/Native compiler errors).
 
 ## Layout (AGP 9 KMP rules — do NOT retro-fit old plugin styles)

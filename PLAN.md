@@ -18,7 +18,7 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 | 8 | Product detail: gallery, spec accordion, add-to-cart flight, heart burst | ✅ done (dot-flight deferred) |
 | 9 | Cart + checkout confirm: swipe-dismiss, count-up total, success check | ✅ done |
 | 10 | Favorites + polish pass (empty states, insets, deep polish) | favorites ✅ · polish pending |
-| 11 | Final QA: assembleDebug + allTests + docs refresh | pending |
+| 11 | Final QA: assembleDebug + allTests + docs refresh | ✅ done |
 
 ## Accepted decisions
 
@@ -99,6 +99,15 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 - [x] Empty state: steel heart outline + NO NOTES YET + copy + BROWSE THE CATALOG (switches to Catalog tab)
 - [x] Device-verified: 1 REFERENCE list → un-favorite → 0 REFERENCES + empty state → browse → catalog; no FATAL
 - Notes: the remaining "polish pass" items of M10 (reduce-motion audit, insets sweep, catalog image re-curation) stay open below
+
+## Milestone 11 — Final QA ✅ (2026-10-17)
+
+- [x] Unit tests added: `commonTest/kotlin/.../data/FormatUsdTest.kt` — 6 regression pins for `formatUsd` (the `$$021,450` bug): plain/multi-group/no-leading-zero/single/zero/negative + priceLabel integration; 6/6 green via `:composeApp:testAndroidHostTest`
+- [x] AGP9-KMP: `withHostTest {}` enabled on the android target (commonTest JVM-hosted); build config recorded in ARCHITECTURE.md
+- [x] Docs refresh: ARCHITECTURE.md (actual module graph with versions, stateless-screen data flow, `withHostTest`, resolved risks + SwipeToDismissBox lesson), AGENTS.md commands table
+- [x] Full gate green: `compileAndroidMain` + `compileKotlinIosSimulatorArm64` + `allTests` + `assembleDebug`
+- [x] Device re-verified through M10 flows (no FATAL anywhere)
+- Open (deferred by user 2026-10-17): catalog image re-curation (top risk below); design dot-flight animation to cart badge (needs detail-in-shell refactor); multi-image gallery dots
 
 ## Remaining risks / TODO
 

@@ -15,6 +15,8 @@ kotlin {
         namespace = "com.horology.store.shared"
         compileSdk = libs.versions.compileSdk.get().toInt()
         minSdk = libs.versions.minSdk.get().toInt()
+        // JVM-hosted unit tests (commonTest) — AGP9 KMP library requires explicit opt-in.
+        withHostTest {}
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
@@ -52,6 +54,9 @@ kotlin {
         }
         iosMain.dependencies {
             implementation(libs.ktor.darwin)
+        }
+        commonTest.dependencies {
+            implementation(kotlin("test"))
         }
     }
 }
