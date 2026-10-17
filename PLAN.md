@@ -16,7 +16,7 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 | 6 | Home: masthead, featured hero, collections rail, staggered grid, nav bar | ✅ done |
 | 7 | Catalog + search + filter chips | ✅ done |
 | 8 | Product detail: gallery, spec accordion, add-to-cart flight, heart burst | ✅ done (dot-flight deferred) |
-| 9 | Cart + checkout confirm: swipe-dismiss, count-up total, success check | pending |
+| 9 | Cart + checkout confirm: swipe-dismiss, count-up total, success check | ✅ done |
 | 10 | Favorites + polish pass (empty states, insets, deep polish) | pending |
 | 11 | Final QA: assembleDebug + allTests + docs refresh | pending |
 
@@ -79,6 +79,18 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 - [x] LoadingBlock (steel pulse skeleton) + NOT FOUND state (loaded but unknown id)
 - [x] Device-verified: accordion expand/collapse, heart fills red & persists cross-route, add-to-cart morphs and Cart badge pops to "1" on the tab bar, no FATAL
 - Notes: DESIGN's red dot FLIES-to-badge — impossible while detail is a detached route (no badge visible); deferred until detail lives inside the shell. Click-morph bug caught on device: handler launched `onAdd` but never set `added` — fixed
+
+## Milestone 9 — Cart + checkout ✅ (2026-10-17)
+
+- [x] Cart rows: 84dp thumb, name/REF/price, SwipeToDismissBox (EndToStart only) with redSoft "✕ RELEASE TO RETURN" track; confirm → Room remove
+- [x] Stepper: hairline roundels −/+, springy 0.88 press-scale, mono count; add/decrement through CartRepository (lines pruning at 0)
+- [x] Summary: hairline receipt row + count-up total (Animatable → formatUsd, 450ms EaseOutCubic); CTA label mirrors total ("RESERVE THE VAULT — $64,350")
+- [x] LazyColumn `animateItem` (spring placement/fade-in) for grid re-layout after dismissal
+- [x] Empty state: THE HOLD IS EMPTY + copy
+- [x] CheckoutConfirm (new detached route `CheckoutConfirm(totalUsd, lineCount)`): red ring draws with spring overshoot → check path drawn via PathMeasure → order-no ticker reveals "HR-87WTBK"-style code (kotlin.random, unambiguous alphabet); cart.clear() on entry
+- [x] RETURN TO THE BOUTIQUE → Home (popUpTo Home), badge cleared
+- [x] Device-verified: +/− stepper (3→4→3 with count-up settling $85,800→$64,350), swipe-dismiss → empty state + badge clear, checkout → seal/ticker/total, return → Home badge gone; no FATAL
+- Notes: (1) M3 SwipeToDismissBox + per-frame `progress` read in content graphicsLayer froze rows at partial dismissal after the shell's enter transition — removed the per-frame read; plain slide-out reveal is stable. (2) Detached routes have no nav bar, so their bottom CTA sits at y≈2293 while shell screens' CTA sits above the bar (~y≈2130) — coordinate care for device scripting.
 
 ## Remaining risks / TODO
 

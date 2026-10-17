@@ -17,3 +17,7 @@ data object Cart
 
 @Serializable
 data class ProductDetail(val productId: String)
+
+/** Detached confirmation; order is cleared on entry. */
+@Serializable
+data class CheckoutConfirm(val totalUsd: Long, val lineCount: Int)

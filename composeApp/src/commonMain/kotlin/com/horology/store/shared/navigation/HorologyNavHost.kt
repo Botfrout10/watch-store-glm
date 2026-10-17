@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.horology.store.shared.ui.cart.CartScreen
 import com.horology.store.shared.ui.catalog.CatalogScreen
+import com.horology.store.shared.ui.checkout.CheckoutConfirmScreen
 import com.horology.store.shared.ui.detail.ProductDetailScreen
 import com.horology.store.shared.ui.favorites.FavoritesScreen
 import com.horology.store.shared.ui.home.HomeScreen
@@ -64,7 +65,11 @@ fun HorologyNavHost() {
         }
         composable<Cart> {
             ShellScreen(selectedTab = 3, onSelectTab = tabSelect(nav)) {
-                CartScreen()
+                CartScreen(
+                    onCheckout = { total, lines ->
+                        nav.navigate(CheckoutConfirm(totalUsd = total, lineCount = lines))
+                    },
+                )
             }
         }
         composable<ProductDetail> { entry ->
@@ -72,6 +77,19 @@ fun HorologyNavHost() {
             ProductDetailScreen(
                 productId = route.productId,
                 onBack = { nav.popBackStack() },
+            )
+        }
+        composable<CheckoutConfirm> { entry ->
+            val route = entry.toRoute<CheckoutConfirm>()
+            CheckoutConfirmScreen(
+                totalUsd = route.totalUsd,
+                lineCount = route.lineCount,
+                onDone = {
+                    nav.navigate(Home) {
+                        popUpTo(Home) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
             )
         }
     }
