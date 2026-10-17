@@ -17,7 +17,7 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 | 7 | Catalog + search + filter chips | ✅ done |
 | 8 | Product detail: gallery, spec accordion, add-to-cart flight, heart burst | ✅ done (dot-flight deferred) |
 | 9 | Cart + checkout confirm: swipe-dismiss, count-up total, success check | ✅ done |
-| 10 | Favorites + polish pass (empty states, insets, deep polish) | pending |
+| 10 | Favorites + polish pass (empty states, insets, deep polish) | favorites ✅ · polish pending |
 | 11 | Final QA: assembleDebug + allTests + docs refresh | pending |
 
 ## Accepted decisions
@@ -91,6 +91,14 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 - [x] RETURN TO THE BOUTIQUE → Home (popUpTo Home), badge cleared
 - [x] Device-verified: +/− stepper (3→4→3 with count-up settling $85,800→$64,350), swipe-dismiss → empty state + badge clear, checkout → seal/ticker/total, return → Home badge gone; no FATAL
 - Notes: (1) M3 SwipeToDismissBox + per-frame `progress` read in content graphicsLayer froze rows at partial dismissal after the shell's enter transition — removed the per-frame read; plain slide-out reveal is stable. (2) Detached routes have no nav bar, so their bottom CTA sits at y≈2293 while shell screens' CTA sits above the bar (~y≈2130) — coordinate care for device scripting.
+
+## Milestone 10 — Favorites ✅ (2026-10-17)
+
+- [x] NOTES ON FILE header (red mono label + live "n REFERENCES" count + hairline), mirroring Home's SELECTION header
+- [x] 2-col grid reusing ProductCard; hearts arrive pre-filled; un-favorite shrinks (badge pop) and the card leaves with spring re-layout
+- [x] Empty state: steel heart outline + NO NOTES YET + copy + BROWSE THE CATALOG (switches to Catalog tab)
+- [x] Device-verified: 1 REFERENCE list → un-favorite → 0 REFERENCES + empty state → browse → catalog; no FATAL
+- Notes: the remaining "polish pass" items of M10 (reduce-motion audit, insets sweep, catalog image re-curation) stay open below
 
 ## Remaining risks / TODO
 
