@@ -15,7 +15,7 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 | 5 | Onboarding: Canvas Swiss dial animation + parallax pages | pending |
 | 6 | Home: masthead, featured hero, collections rail, staggered grid, nav bar | ✅ done |
 | 7 | Catalog + search + filter chips | ✅ done |
-| 8 | Product detail: gallery, spec accordion, add-to-cart flight, heart burst | pending |
+| 8 | Product detail: gallery, spec accordion, add-to-cart flight, heart burst | ✅ done (dot-flight deferred) |
 | 9 | Cart + checkout confirm: swipe-dismiss, count-up total, success check | pending |
 | 10 | Favorites + polish pass (empty states, insets, deep polish) | pending |
 | 11 | Final QA: assembleDebug + allTests + docs refresh | pending |
@@ -68,6 +68,17 @@ Platforms: Android (buildable on this machine) + iOS (scaffold only — Xcode/ma
 - [x] 2-col grid of ProductCards keyed by id; favorites flow -> Room; nav to detail (route id passed — device-verified)
 - [x] Device-verified (emulator-5556): default grid, search "chro" -> empty state, "commandeur" -> 1 card, DIVER chip -> 2 divers, card -> The Study stub, no FATAL
 - Notes: chip row horizontal-scrolls if clipped (6 chips at 1080w fits ~4.5); red underline is the only red accent on the screen
+
+## Milestone 8 — Product detail ✅ (2026-10-17)
+
+- [x] Top bar: back icon + BurstHeart (spring 1→1.35→1 + red ring pulse fading outward, 420ms)
+- [x] Gallery: 1.15:1 card image (Coil crossfade); single URL per product so no swipe dots yet
+- [x] Identity block: house·collection·year mono eyebrow, grotesk name, REF mono, PriceXL, body description
+- [x] SPECIFICATIONS accordion: chevron spring-rotates 180°, animateContentSize, 6 hairline rows (movement/case/water/dial/strap/year), mono label+value
+- [x] AddToCartBar: fixed ink bar `ADD TO CART — $21,450` → morphs to redSoft+red-bordered `✓ ADDED TO CART` (AnimatedContent 160ms fade-through), auto-reverts after 1400ms
+- [x] LoadingBlock (steel pulse skeleton) + NOT FOUND state (loaded but unknown id)
+- [x] Device-verified: accordion expand/collapse, heart fills red & persists cross-route, add-to-cart morphs and Cart badge pops to "1" on the tab bar, no FATAL
+- Notes: DESIGN's red dot FLIES-to-badge — impossible while detail is a detached route (no badge visible); deferred until detail lives inside the shell. Click-morph bug caught on device: handler launched `onAdd` but never set `added` — fixed
 
 ## Remaining risks / TODO
 
