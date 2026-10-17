@@ -42,15 +42,18 @@ val FeaturedProducts = listOf("car-4910", "mer-2480", "car-4010")
 const val OnboardingImage: String =
     "https://images.unsplash.com/photo-1509048191080-d2984bad6ae5?auto=format&fit=crop&w=1200&q=80"
 
-/** $18,240 — manual grouping; deterministic across platforms. */
+/** $21,450 — manual grouping; deterministic across platforms. */
 internal fun formatUsd(value: Long): String {
-    val sign = if (value < 0) "-" else ""
+    val sign = if (value < 0) "-$" else "$"
     var rest = if (value < 0) -value else value
-    var out = rest.mod(1000L).toString()
-    rest /= 1000
-    while (rest > 0) {
-        out = rest.mod(1000L).toString().padStart(3, '0') + "," + out
-        rest /= 1000
+    val groups = ArrayList<String>(5)
+    do {
+        groups.add(rest.mod(1000L).toString())
+        rest /= 1000L
+    } while (rest > 0L)
+    val out = StringBuilder(sign).append(groups.removeAt(groups.size - 1))
+    for (i in groups.indices.reversed()) {
+        out.append(',').append(groups[i].padStart(3, '0'))
     }
-    return "$sign$$$out"
+    return out.toString()
 }

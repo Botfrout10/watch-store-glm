@@ -42,8 +42,12 @@ fun HorologyNavHost() {
         },
     ) {
         composable<Home> {
-            ShellScreen(selectedTab = 0, onSelectTab = tabSelect(nav)) {
-                HomeScreen()
+            val selectTab = tabSelect(nav)
+            ShellScreen(selectedTab = 0, onSelectTab = selectTab) {
+                HomeScreen(
+                    onOpenProduct = { id -> nav.navigate(ProductDetail(id)) },
+                    onOpenCatalog = { selectTab(1) },
+                )
             }
         }
         composable<Catalog> {
